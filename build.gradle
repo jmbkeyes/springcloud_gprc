@@ -1,0 +1,67 @@
+buildscript {
+    ext {
+        springBootVersion = '2.3.4.RELEASE'
+        springBootManagementVersion = '1.0.8.RELEASE'
+        springCloudVersion = 'Hoxton.SR6'
+        REPOSITORY_HOME = "http://maven.aliyun.com"
+    }
+    repositories {
+        maven { url '${REPOSITORY_HOME}/nexus/content/groups/public/' }
+        mavenCentral()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("io.spring.gradle:dependency-management-plugin:${springBootManagementVersion}")
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.15'
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    group = 'com.demo'
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+subprojects {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+    //仓库
+    repositories {
+        maven { url '${REPOSITORY_HOME}/nexus/content/groups/public/' }
+        mavenCentral()
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+    }
+
+    jar {
+        enabled = true
+    }
+
+    bootJar {
+        classifier = 'boot'
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        compileOnly 'org.projectlombok:lombok'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        annotationProcessor 'org.projectlombok:lombok'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+    }
+
+    dependencyManagement {
+        imports { mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}") }
+        imports { mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

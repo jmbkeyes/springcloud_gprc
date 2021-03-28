@@ -1,0 +1,18 @@
+info:
+  version: 1.0
+  name: hello-rpc-server
+
+server:
+  port: 8082
+spring:
+  application:
+    name: hello-grpc-server
+
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://192.168.1.105:8761/eureka/
+grpc:
+  server:
+    port: 7070

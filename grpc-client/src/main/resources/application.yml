@@ -1,0 +1,21 @@
+info:
+  version: 1.0
+  name: grpc-client
+
+
+server:
+  port: 8012
+
+grpc:
+  client:
+    hello-grpc-server:
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+eureka:
+  client:
+    service-url:
+      default-zone: http://192.168.1.105:8761/eureka/
+spring:
+  application:
+    name: grpc-client
