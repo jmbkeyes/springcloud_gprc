@@ -7,12 +7,17 @@ server:
 spring:
   application:
     name: hello-grpc-server
-
+  zipkin:
+    enabled: true
+    base-url: http://10.0.0.5:9411
+  sleuth:
+    sampler:
+      probability: 1
 
 eureka:
   client:
     service-url:
-      default-zone: http://192.168.1.105:8761/eureka/
+      default-zone: http://10.0.0.5:8761/eureka/
 grpc:
   server:
     port: 7070
