@@ -9,7 +9,13 @@ spring:
     name: hello-grpc-server
   zipkin:
     enabled: true
-    base-url: http://10.0.0.5:9411
+    #base-url: http://10.0.0.5:9411
+    sender:
+      type: kafka
+    kafka:
+      topic: zipkin
+  kafka:
+    bootstrap-servers: 10.0.0.5:9090,10.0.0.5:9091,10.0.0.5:9092
   sleuth:
     sampler:
       probability: 1
